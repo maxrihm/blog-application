@@ -5,7 +5,7 @@ import { Card, CardContent, CardActionArea, Typography } from '@mui/material';
 
 const Post = ({ post, author }) => {
   return (
-    <Card style={{ marginBottom: '1rem' }}>
+<Card className="post-card">
       <CardActionArea component={Link} to={`/post/${post.id}`}>
         <CardContent>
           <Typography variant="h6" component="div">
