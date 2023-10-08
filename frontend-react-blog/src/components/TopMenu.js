@@ -19,6 +19,11 @@ const TopMenu = ({ userName }) => {
     navigate('/write-post');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -28,12 +33,18 @@ const TopMenu = ({ userName }) => {
           </Link>
         </Typography>
         {userName ? (
-          <Typography variant="h6" style={{ marginRight: '1rem' }}>
-            Welcome, {userName}!
-          </Typography>
-        ) : null}
-        <Button color="inherit" onClick={goToLogin}>Login</Button>
-        <Button color="inherit" onClick={goToRegister}>Register</Button>
+          <>
+            <Typography variant="h6" style={{ marginRight: '1rem' }}>
+              Welcome, {userName}!
+            </Typography>
+            <Button color="inherit" onClick={handleLogout}>Logout</Button>
+          </>
+        ) : (
+          <>
+            <Button color="inherit" onClick={goToLogin}>Login</Button>
+            <Button color="inherit" onClick={goToRegister}>Register</Button>
+          </>
+        )}
         <Button color="inherit" onClick={goToWritePost}>Write Post</Button>
       </Toolbar>
     </AppBar>
