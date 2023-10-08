@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const TopMenu = () => {
+const TopMenu = ({ userName }) => {
   const navigate = useNavigate();
 
   const goToLogin = () => {
@@ -27,6 +27,11 @@ const TopMenu = () => {
             React Blog
           </Link>
         </Typography>
+        {userName ? (
+          <Typography variant="h6" style={{ marginRight: '1rem' }}>
+            Welcome, {userName}!
+          </Typography>
+        ) : null}
         <Button color="inherit" onClick={goToLogin}>Login</Button>
         <Button color="inherit" onClick={goToRegister}>Register</Button>
         <Button color="inherit" onClick={goToWritePost}>Write Post</Button>

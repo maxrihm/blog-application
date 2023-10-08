@@ -11,11 +11,13 @@ import PostDetails from './components/PostDetails';
 import WritePost from './components/WritePost';
 
 function App() {
+  const userName = 'John Doe'; // set the userName prop value here
+
   return (
     <Provider store={store}>
       <Router>
         <div className="App">
-          <TopMenu />
+          <TopMenu userName={userName} /> {/* pass the userName prop value here */}
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
