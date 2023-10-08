@@ -32,20 +32,13 @@ const TopMenu = ({ userName }) => {
             React Blog
           </Link>
         </Typography>
-        {userName ? (
-          <>
-            <Typography variant="h6" style={{ marginRight: '1rem' }}>
-              Welcome, {userName}!
-            </Typography>
-            <Button color="inherit" onClick={handleLogout}>Logout</Button>
-          </>
-        ) : (
-          <>
-            <Button color="inherit" onClick={goToLogin}>Login</Button>
-            <Button color="inherit" onClick={goToRegister}>Register</Button>
-          </>
-        )}
+        <Typography variant="h6" style={{ marginRight: '1rem' }}>
+          {userName ? `Welcome, ${userName}!` : ''}
+        </Typography>
+        <Button color="inherit" onClick={goToLogin}>Login</Button>
+        <Button color="inherit" onClick={goToRegister}>Register</Button>
         <Button color="inherit" onClick={goToWritePost}>Write Post</Button>
+        <Button color="inherit" onClick={handleLogout}>Logout</Button>
       </Toolbar>
     </AppBar>
   );
