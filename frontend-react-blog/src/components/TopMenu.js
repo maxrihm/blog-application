@@ -15,6 +15,10 @@ const TopMenu = () => {
     navigate('/register');
   };
 
+  const goToWritePost = () => {
+    navigate('/write-post');
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -25,6 +29,7 @@ const TopMenu = () => {
         </Typography>
         <Button color="inherit" onClick={goToLogin}>Login</Button>
         <Button color="inherit" onClick={goToRegister}>Register</Button>
+        <Button color="inherit" onClick={goToWritePost}>Write Post</Button>
       </Toolbar>
     </AppBar>
   );

@@ -8,6 +8,7 @@ import MainPage from './components/MainPage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import PostDetails from './components/PostDetails';
+import WritePost from './components/WritePost';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/write-post" element={<WritePost />} />
             <Route path="/post/:postId" element={<PostDetails />} />
           </Routes>
         </div>
