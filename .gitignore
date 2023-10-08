@@ -22,86 +22,48 @@ frontend-react-blog/npm-debug.log*
 frontend-react-blog/yarn-debug.log*
 frontend-react-blog/yarn-error.log*
 
-## .NET Core
-*.runtimeconfig.json.dev
-*.deps
-bin/
-obj/
-
-## ASP.NET temporary files
-*.swp
-*.swo
-*.[Rr]e[Ss]harper
-nccompile*
-*.bak
-*.pidb
-*.dbmdl
-*.dbproj.schemaview
-*.pfx
-*.publishsettings
-
-## Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-## Folder config file
-Desktop.ini
-
-## Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-## VS Code directories
-.vscode/
-*.code-workspace
-
-## Rider directory
-.idea/
-
-## Windows
-*.exe
-*.dll
-*.pdb
-
-## TDS tracking file
-_TDS_
-
-## ReSharper is a .NET coding add-in
-_ReSharper*/
-*.[Rr]e[Ss]harper
-
-## JustCode is a .NET coding add-in
-.JustCode
-
-## TeamCity is a build add-in
-_TeamCity*
-
-## DotCover is a Code Coverage Tool
-*.dotCover
-
-## NCrunch
-_NCrunch_*
-.*crunch*.local.xml
-
-## MightyMoose
-*.mm.*
-AutoTest.Net/
-
-## Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-## OSX
-.DS_Store
-*.swp
-
-## Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-## VS Code directories
-.vscode/
-
-## Windows & macOS directories
-.vs/
-bin/
-obj/
+## UserService
+UserService/*.runtimeconfig.json.dev
+UserService/*.deps
+UserService/bin/
+UserService/obj/
+UserService/*.swp
+UserService/*.swo
+UserService/*.[Rr]e[Ss]harper
+UserService/nccompile*
+UserService/*.bak
+UserService/*.pidb
+UserService/*.dbmdl
+UserService/*.dbproj.schemaview
+UserService/*.pfx
+UserService/*.publishsettings
+UserService/Thumbs.db
+UserService/ehthumbs.db
+UserService/Desktop.ini
+UserService/$RECYCLE.BIN/
+UserService/.vscode/
+UserService/*.code-workspace
+UserService/.idea/
+UserService/*.exe
+UserService/*.dll
+UserService/*.pdb
+UserService/_TDS_
+UserService/_ReSharper*/
+UserService/*.[Rr]e[Ss]harper
+UserService/.JustCode
+UserService/_TeamCity*
+UserService/*.dotCover
+UserService/_NCrunch_*
+UserService/.*crunch*.local.xml
+UserService/*.mm.*
+UserService/AutoTest.Net/
+UserService/Thumbs.db
+UserService/ehthumbs.db
+UserService/.DS_Store
+UserService/*.swp
+UserService/Thumbs.db
+UserService/ehthumbs.db
+UserService/.vscode/
+UserService/.vs/
+UserService/bin/
+UserService/obj/
