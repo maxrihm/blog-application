@@ -67,3 +67,5 @@ UserService/.vscode/
 UserService/.vs/
 UserService/bin/
 UserService/obj/
+
+docker-postgres-userservice/
