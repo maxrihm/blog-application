@@ -1,22 +1,37 @@
-// src/components/LoginPage.js
+// frontend-react-blog/src/components/LoginPage.js
+
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextField, Button, Grid, Paper } from '@mui/material';
 
-const LoginPage = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+function LoginPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleLogin = () => {
-    // Here you would generally handle authentication, e.g., call an API. 
-    // But for this example, let's dispatch the login action directly:
-    dispatch({ type: 'LOGIN' });
-    alert('Logged in!');
+    const apiUrl = "https://localhost:7264/Auth/login";
+
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic " + btoa(username + ":" + password)  // Basic authentication header
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        dispatch({ type: 'LOGIN', payload: username });  // Pass username to action
+        alert('Logged in!');
+      } else {
+        alert(data.message || 'Error logging in');
+      }
+    })
+    .catch(error => {
+      console.error("There was an error logging in", error);
+      alert('Error logging in. Please try again.');
+    });
   };
 
   return (
@@ -29,8 +44,8 @@ const LoginPage = () => {
             label="Username" 
             variant="outlined" 
             name="username" 
-            value={credentials.username}
-            onChange={handleInputChange}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             style={{ marginBottom: '1rem' }}
           />
           <TextField 
@@ -39,8 +54,8 @@ const LoginPage = () => {
             variant="outlined" 
             type="password" 
             name="password" 
-            value={credentials.password}
-            onChange={handleInputChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Button 
             variant="contained" 

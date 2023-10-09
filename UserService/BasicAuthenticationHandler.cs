@@ -45,9 +45,9 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             if (user == null)
                 return AuthenticateResult.Fail("Invalid username.");
 
-            // Here, you can use a more advanced hashing mechanism.
-            if (user.Password != password)
+            if (password != user.Password)
                 return AuthenticateResult.Fail("Invalid password.");
+
 
             var claims = new[] { new Claim(ClaimTypes.Name, user.Username) };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
