@@ -8,15 +8,21 @@ const initialState = {
 };
 
 function reducer(state = initialState, action) {
-    switch (action.type) {
-        case 'LOGIN':
-            return { ...state, isLoggedIn: true, username: action.payload };  // Store the username
-        case 'LOGOUT':
-            return { ...state, isLoggedIn: false, username: null };  // Clear the username
-        default:
-            return state;
-    }
+  switch (action.type) {
+      case 'LOGIN':
+          return { 
+              ...state, 
+              isLoggedIn: true, 
+              username: action.payload.username, 
+              role: action.payload.role
+          };  
+      case 'LOGOUT':
+          return { ...state, isLoggedIn: false, username: null, role: null };  
+      default:
+          return state;
+  }
 }
+
 
 const store = createStore(reducer, applyMiddleware(thunk));
 

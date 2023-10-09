@@ -20,9 +20,23 @@ namespace UserService.Controllers
 
         [HttpGet("login")]
         [Authorize]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            return Ok(new { Success = true, Username = User.Identity.Name });
+            var user = await _context.Users
+                .Include(u => u.Role)  // Include the Role navigation property
+                .FirstOrDefaultAsync(u => u.Username == User.Identity.Name);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(new
+            {
+                Success = true,
+                Username = user.Username,
+                Role = user.Role?.Name  // Send the role name
+            });
         }
 
         [HttpPost("register")]
@@ -42,5 +56,6 @@ namespace UserService.Controllers
 
             return Ok(new { Message = "User registered successfully." });
         }
+
     }
 }

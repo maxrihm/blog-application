@@ -21,12 +21,18 @@ function LoginPage() {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.success) {
-        dispatch({ type: 'LOGIN', payload: username });  // Pass username to action
-        alert('Logged in!');
-      } else {
-        alert(data.message || 'Error logging in');
-      }
+        if (data.success) {
+            dispatch({ 
+                type: 'LOGIN', 
+                payload: {
+                    username: data.username,
+                    role: data.role
+                }
+            });
+            alert('Logged in!');
+        } else {
+            alert(data.message || 'Error logging in');
+        }
     })
     .catch(error => {
       console.error("There was an error logging in", error);
