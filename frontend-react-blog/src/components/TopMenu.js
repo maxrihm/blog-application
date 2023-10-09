@@ -3,9 +3,12 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';  // Import both useSelector and useDispatch
 
 const TopMenu = ({ userName }) => {
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(state => state.isLoggedIn);  // Get login status from redux
+  const dispatch = useDispatch();  // Get dispatch function from redux
 
   const goToLogin = () => {
     navigate('/login');
@@ -21,8 +24,12 @@ const TopMenu = ({ userName }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    dispatch({ type: 'LOGOUT' });  // Dispatch LOGOUT action to redux
     navigate('/login');
-  };
+};
+
 
   return (
     <AppBar position="static">
@@ -35,10 +42,10 @@ const TopMenu = ({ userName }) => {
         <Typography variant="h6" style={{ marginRight: '1rem' }}>
           {userName ? `Welcome, ${userName}!` : ''}
         </Typography>
-        <Button color="inherit" onClick={goToLogin}>Login</Button>
-        <Button color="inherit" onClick={goToRegister}>Register</Button>
-        <Button color="inherit" onClick={goToWritePost}>Write Post</Button>
-        <Button color="inherit" onClick={handleLogout}>Logout</Button>
+        {!isLoggedIn && <Button color="inherit" onClick={goToLogin}>Login</Button>}
+        {!isLoggedIn && <Button color="inherit" onClick={goToRegister}>Register</Button>}
+        {isLoggedIn && <Button color="inherit" onClick={goToWritePost}>Write Post</Button>}
+        {isLoggedIn && <Button color="inherit" onClick={handleLogout}>Logout</Button>}
       </Toolbar>
     </AppBar>
   );

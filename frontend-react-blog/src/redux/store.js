@@ -3,8 +3,9 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-  isLoggedIn: false,
-  username: null   // Add a username field
+  isLoggedIn: localStorage.getItem('username') ? true : false,
+  username: localStorage.getItem('username') || null,
+  role: localStorage.getItem('role') || null
 };
 
 function reducer(state = initialState, action) {

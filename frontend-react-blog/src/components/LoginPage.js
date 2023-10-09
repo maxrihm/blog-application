@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextField, Button, Grid, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     const apiUrl = "https://localhost:7264/Auth/login";
@@ -21,19 +23,24 @@ function LoginPage() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
-            dispatch({ 
-                type: 'LOGIN', 
-                payload: {
-                    username: data.username,
-                    role: data.role
-                }
-            });
-            alert('Logged in!');
-        } else {
-            alert(data.message || 'Error logging in');
-        }
-    })
+      if (data.success) {
+          dispatch({ 
+              type: 'LOGIN', 
+              payload: {
+                  username: data.username,
+                  role: data.role
+              }
+          });
+          // Store username and role in localStorage
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('role', data.role);
+  
+          alert('Logged in!');
+          navigate('/'); // navigate to home page after successful login
+      } else {
+          alert(data.message || 'Error logging in');
+      }
+  })
     .catch(error => {
       console.error("There was an error logging in", error);
       alert('Error logging in. Please try again.');
