@@ -13,7 +13,7 @@ function LoginPage() {
     const apiUrl = "https://localhost:7264/Auth/login";
 
     fetch(apiUrl, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Basic " + btoa(username + ":" + password)  // Basic authentication header
