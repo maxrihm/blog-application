@@ -1,42 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import * as signalR from '@microsoft/signalr';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const NotificationManager = () => {
-    const [notification, setNotification] = useState('');
+    const message = useSelector(state => state.signalR.message);
 
     useEffect(() => {
-        // Setup SignalR connection
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7056/notificationHub")  // Replace with your Notification Service URL
-            .configureLogging(signalR.LogLevel.Information)
-            .build();
+        if (message) {
+            toast(message);
+        }
+    }, [message]);
 
-        connection.start()
-            .catch(err => console.error(err.toString()));
-
-        // Listen for messages
-        connection.on("ReceiveMessage", (user, message) => {
-            console.log(message);
-            setNotification(message);
-        });
-
-        // Listen for connection close event
-        connection.onclose(async () => {
-            await new Promise(resolve => setTimeout(resolve, 5000)); // wait for 5 seconds before trying to reconnect
-            await connection.start();
-        });
-
-        // Cleanup on component unmount
-        return () => {
-            connection.stop();
-        };
-    }, []);
-
-    return (
-        <div className="notification">
-            {notification && <p>{notification}</p>}
-        </div>
-    );
+    return null;  // This component does not render anything
 };
 
 export default NotificationManager;

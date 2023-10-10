@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const loggedInUserId = useSelector(state => state.userId); // get userId from Redux state
+  const loggedInUserId = useSelector(state => state.auth.userId); // get userId from auth state
   const [isLiked, setIsLiked] = useState(false);  // State to track if post is liked by user
 
   useEffect(() => {

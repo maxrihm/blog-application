@@ -1,5 +1,7 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
+import signalRReducer from './reducers/signalRReducer';
+import { signalRMiddleware } from './middlewares/signalRMiddleware';
 
 const initialState = {
   isLoggedIn: localStorage.getItem('username') ? true : false,
@@ -8,7 +10,7 @@ const initialState = {
   userId: localStorage.getItem('userId') || null  // Initializing userId from localStorage
 };
 
-function reducer(state = initialState, action) {
+function authReducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN':
       return { 
@@ -25,6 +27,12 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const rootReducer = combineReducers({
+  auth: authReducer,
+  signalR: signalRReducer,
+  // ... other reducers ...
+});
+
+const store = createStore(rootReducer, applyMiddleware(thunk, signalRMiddleware));
 
 export default store;

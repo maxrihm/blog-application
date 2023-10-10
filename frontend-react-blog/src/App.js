@@ -8,8 +8,11 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import PostDetails from './components/PostDetails';
 import WritePost from './components/WritePost';
-import NotificationManager from './components/NotificationManager'; // import the NotificationManager component
+import NotificationManager from './components/NotificationManager';
 import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function AppWrapper() {
   return (
@@ -26,7 +29,7 @@ function App() {
     <Router>
       <div className="App">
         <TopMenu userName={userName} />
-        <NotificationManager /> {/* Add the NotificationManager here */}
+        <NotificationManager />
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -34,6 +37,17 @@ function App() {
           <Route path="/write-post" element={<WritePost />} />
           <Route path="/post/:postId" element={<PostDetails />} />
         </Routes>
+        <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </Router>
   );
