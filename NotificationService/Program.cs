@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.SignalR;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Inject ILogger into your application's scope
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,6 +52,10 @@ consumer.Received += (model, ea) =>
 {
     var body = ea.Body.ToArray();
     var message = Encoding.UTF8.GetString(body);
+
+    // Log the received message from RabbitMQ
+    logger.LogInformation($"Received message from RabbitMQ: {message}");
+
     var hubContext = app.Services.GetService<IHubContext<NotificationHub>>();
     hubContext.Clients.All.SendAsync("ReceiveMessage", "Server", message);
 };
@@ -55,6 +63,9 @@ consumer.Received += (model, ea) =>
 channel.BasicConsume(queue: "likeNotificationQueue",
                      autoAck: true,
                      consumer: consumer);
+
+// Log that the app is starting RabbitMQ consumer
+logger.LogInformation("Starting RabbitMQ consumer...");
 
 app.Run();
 
