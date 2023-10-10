@@ -6,22 +6,16 @@ import { useParams } from 'react-router-dom';
 const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const [author, setAuthor] = useState(null);
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+    fetch(`https://localhost:7046/api/Posts/${postId}`)
       .then((response) => response.json())
-      .then((data) => {
-        setPost(data);
-        return fetch(`https://jsonplaceholder.typicode.com/users/${data.userId}`);
-      })
-      .then((response) => response.json())
-      .then((data) => setAuthor(data));
+      .then((data) => setPost(data));
   }, [postId]);
 
   if (!post) return <p>Loading...</p>;
 
-  const formattedDate = new Date(post.date || Date.now()).toLocaleDateString('en-US', {
+  const formattedDate = new Date(post.dateCreated).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -30,18 +24,10 @@ const PostDetails = () => {
   return (
     <div>
       <h2>{post.title}</h2>
-      <p>{post.body}</p>
-      {author && (
-        <p>
-          By: {author.name}
-        </p>
-      )}
-      <p>
-        Date: {formattedDate}
-      </p>
-      <p>
-        Likes: {post.likes || "0"} {/* Mocked likes as the API doesn't provide it */}
-      </p>
+      <p>{post.content}</p>
+      <p>By: {post.userName}</p>
+      <p>Date: {formattedDate}</p>
+      {/* Likes are omitted for now as per your instruction */}
     </div>
   );
 };

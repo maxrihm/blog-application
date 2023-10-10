@@ -1,52 +1,86 @@
+// frontend-react-blog/src/components/WritePost.js 
 import React, { useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { TextField, Button, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-// Uncomment below if using react-quill
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css'; 
-
-const WritePost = () => {
+function WritePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const username = useSelector(state => state.username);
+    const userId = useSelector(state => state.userId);
     const navigate = useNavigate();
 
-    const handleSave = () => {
-        // Here you can save the content to a backend/API or Redux
-        console.log(title, content);
-        navigate('/');
-    };
+    const handlePostSubmit = () => {
+        const apiUrl = "https://localhost:7046/api/Posts";
 
-    const handleCancel = () => {
-        navigate('/');
+        const postData = {
+            UserId: userId,
+            UserName: username,
+            Title: title,
+            Content: content
+        };
+
+        fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Post created successfully!');
+                navigate('/'); // navigate to home page after successful post creation
+            })
+            .catch(error => {
+                console.error("There was an error creating the post", error);
+                alert('Error creating post. Please try again.');
+            });
     };
 
     return (
-        <div>
-            <h1>Write a new post</h1>
-            <TextField
-                label="Title"
-                fullWidth
-                variant="outlined"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-            />
-            {/* Uncomment below if using react-quill */}
-            {/* <ReactQuill value={content} onChange={setContent} /> */}
-            <TextField
-                label="Write your post"
-                multiline
-                rows={10}
-                fullWidth
-                variant="outlined"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-            />
-            <div style={{ marginTop: '1rem' }}>
-                <Button variant="contained" color="primary" onClick={handleSave}>Save</Button>
-                <Button variant="contained" onClick={handleCancel} style={{ marginLeft: '1rem' }}>Cancel</Button>
-            </div>
-        </div>
+        <Grid container justifyContent="center" style={{ marginTop: '1rem' }}>
+            <Grid item xs={12} md={8} lg={6}>
+                <Paper style={{ padding: '2rem' }}>
+                    <h2>Write a Post</h2>
+                    <TextField
+                        fullWidth
+                        label="Title"
+                        variant="outlined"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        style={{ marginBottom: '1rem' }}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Content"
+                        variant="outlined"
+                        multiline
+                        rows={4}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        style={{ marginBottom: '1rem' }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginTop: '1rem', marginRight: '1rem' }}
+                        onClick={handlePostSubmit}
+                    >
+                        Submit Post
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        style={{ marginTop: '1rem' }}
+                        onClick={() => navigate('/')}
+                    >
+                        Cancel
+                    </Button>
+                </Paper>
+            </Grid>
+        </Grid>
     );
 };
 
