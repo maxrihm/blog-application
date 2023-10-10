@@ -1,4 +1,3 @@
-// src/components/RegisterPage.js
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextField, Button, Grid, Paper } from '@mui/material';
@@ -13,10 +12,32 @@ const RegisterPage = () => {
   };
 
   const handleRegister = () => {
-    // Typically, you'd call an API to register the user here.
-    // For this example, let's just show an alert.
-    alert('Registered successfully!');
-    // Dispatch any relevant actions if needed.
+    const apiUrl = "https://localhost:7264/Auth/register";
+  
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(credentials)
+    })
+    .then(response => {
+       if (response.status === 200) {
+           return response.json();
+       } else if (response.status === 400) {
+           throw new Error('Username is already taken.');
+       } else {
+           throw new Error('Error registering. Please try again.');
+       }
+    })
+    .then(data => {
+       alert(data.Message || 'Registered successfully!');
+       // Optionally navigate to login or home page after successful registration
+    })
+    .catch(error => {
+      console.error("Error Occurred:", error.message); 
+      alert(error.message);
+    });
   };
 
   return (

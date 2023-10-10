@@ -28,7 +28,7 @@ namespace UserService.Controllers
 
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound(new { Success = false, Message = "User not found." });
             }
 
             return Ok(new
@@ -42,20 +42,27 @@ namespace UserService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
-            if (await _context.Users.AnyAsync(x => x.Username == userDto.Username))
-                return BadRequest("Username is already taken.");
-
-            var user = new User
+            try
             {
-                Username = userDto.Username,
-                Password = userDto.Password  // Store the plain-text password
-            };
+                if (await _context.Users.AnyAsync(x => x.Username == userDto.Username))
+                    return BadRequest(new { Success = false, Message = "Username is already taken." });
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                var user = new User
+                {
+                    Username = userDto.Username,
+                    Password = userDto.Password  // Store the plain-text password
+                };
 
-            return Ok(new { Message = "User registered successfully." });
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Success = true, Message = "User registered successfully." });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, Message = ex.Message });
+            }
         }
-
     }
 }
