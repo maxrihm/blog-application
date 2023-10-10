@@ -14,11 +14,11 @@ const PostList = () => {
 
   return (
     <div>
-      {posts.map((post) => (
-        <Post key={post.postId} post={post} />
-      ))}
+        {posts.map((post) => {
+            return <Post key={post.postId} post={post} />;
+        })}
     </div>
-  );
+);
 };
 
 export default PostList;

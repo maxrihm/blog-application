@@ -8,5 +8,7 @@
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
+        public int TotalLikes { get; set; } = 0;
+
     }
 }

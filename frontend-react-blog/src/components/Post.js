@@ -26,6 +26,9 @@ const Post = ({ post }) => {
           <Typography variant="subtitle2" color="textSecondary" style={{ marginTop: '0.5rem' }}>
             Date: {formattedDate}
           </Typography>
+          <Typography variant="subtitle2" color="textSecondary" style={{ marginTop: '0.5rem' }}>
+            Likes: {post.totalLikes}
+          </Typography>
           {/* Likes are omitted for now as per your instruction */}
         </CardContent>
       </CardActionArea>
