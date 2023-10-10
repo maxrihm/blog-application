@@ -49,6 +49,12 @@ namespace BlogService.Controllers
                 post.TotalLikes += 1;
 
                 await _context.SaveChangesAsync();
+
+                // Send a notification to RabbitMQ
+                var publisher = new RabbitMQPublisher("localhost");  // Adjust the hostname if needed.
+                var notificationMessage = $"Post {likeDto.PostId} was liked!";
+                publisher.PublishMessage("likeNotificationQueue", notificationMessage);
+
                 return Ok(new { message = "Liked successfully." });
             }
         }
