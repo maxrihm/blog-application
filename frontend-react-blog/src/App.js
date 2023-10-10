@@ -1,4 +1,3 @@
-// frontend-react-blog/src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -9,6 +8,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import PostDetails from './components/PostDetails';
 import WritePost from './components/WritePost';
+import NotificationManager from './components/NotificationManager'; // import the NotificationManager component
 import { useSelector } from 'react-redux';
 
 function AppWrapper() {
@@ -26,6 +26,7 @@ function App() {
     <Router>
       <div className="App">
         <TopMenu userName={userName} />
+        <NotificationManager /> {/* Add the NotificationManager here */}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />

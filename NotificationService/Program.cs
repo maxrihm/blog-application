@@ -29,6 +29,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Add CORS configuration
+app.UseCors(builder => 
+    builder.WithOrigins("http://localhost:3000")  // Replace with your React app's URL
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials());
+
 app.UseAuthorization();
 
 // Map the SignalR hub
