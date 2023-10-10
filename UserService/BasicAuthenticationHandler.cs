@@ -15,22 +15,28 @@ using UserService.Models;
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     private readonly ApplicationDbContext _context;
+    private readonly MongoDbContext _mongoDbContext;
 
     public BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        MongoDbContext mongoDbContext)
         : base(options, logger, encoder, clock)
     {
         _context = context;
+        _mongoDbContext = mongoDbContext;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         if (!Request.Headers.ContainsKey("Authorization"))
+        {
+            _mongoDbContext.Logs.InsertOne(new Log { Message = "Authorization header was not found during login attempt.", Date = DateTime.UtcNow });
             return AuthenticateResult.Fail("Authorization header was not found.");
+        }
 
         try
         {
@@ -43,11 +49,18 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
+            {
+                _mongoDbContext.Logs.InsertOne(new Log { Message = $"Invalid login attempt for username {username}.", Date = DateTime.UtcNow });
                 return AuthenticateResult.Fail("Invalid username.");
+            }
 
             if (password != user.Password)
+            {
+                _mongoDbContext.Logs.InsertOne(new Log { Message = $"Invalid password attempt for username {username}.", Date = DateTime.UtcNow });
                 return AuthenticateResult.Fail("Invalid password.");
+            }
 
+            _mongoDbContext.Logs.InsertOne(new Log { Message = $"Successful login for username {username}.", Date = DateTime.UtcNow });
 
             var claims = new[] { new Claim(ClaimTypes.Name, user.Username) };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
@@ -58,6 +71,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         }
         catch
         {
+            _mongoDbContext.Logs.InsertOne(new Log { Message = "Error has occurred during login attempt.", Date = DateTime.UtcNow });
             return AuthenticateResult.Fail("Error has occurred.");
         }
     }
