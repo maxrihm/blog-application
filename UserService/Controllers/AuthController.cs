@@ -34,6 +34,7 @@ namespace UserService.Controllers
             return Ok(new
             {
                 Success = true,
+                UserId = user.UserId,  // Send the UserId
                 Username = user.Username,
                 Role = user.Role?.Name  // Send the role name
             });

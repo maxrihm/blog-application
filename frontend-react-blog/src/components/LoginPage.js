@@ -28,12 +28,14 @@ function LoginPage() {
               type: 'LOGIN', 
               payload: {
                   username: data.username,
-                  role: data.role
+                  role: data.role,
+                  userId: data.userId  // Storing userId in Redux store
               }
           });
-          // Store username and role in localStorage
+          // Store username, role, and userId in localStorage
           localStorage.setItem('username', data.username);
           localStorage.setItem('role', data.role);
+          localStorage.setItem('userId', data.userId);  // Storing userId in localStorage
   
           alert('Logged in!');
           navigate('/'); // navigate to home page after successful login
