@@ -23,7 +23,7 @@ function AppWrapper() {
 }
 
 function App() {
-  const userName = useSelector(state => state.username);
+  const userName = useSelector(state => state.auth.username);
 
   return (
     <Router>

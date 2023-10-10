@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 function WritePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const username = useSelector(state => state.username);
-    const userId = useSelector(state => state.userId);
+    const userName = useSelector(state => state.auth.username);
+    const userId = useSelector(state => state.auth.userId);
     const navigate = useNavigate();
 
     const handlePostSubmit = () => {
@@ -16,7 +16,7 @@ function WritePost() {
 
         const postData = {
             UserId: userId,
-            UserName: username,
+            UserName: userName,
             Title: title,
             Content: content
         };

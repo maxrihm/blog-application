@@ -3,12 +3,13 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';  // Import both useSelector and useDispatch
+import { useSelector, useDispatch } from 'react-redux';
 
-const TopMenu = ({ userName }) => {
+const TopMenu = () => {
   const navigate = useNavigate();
-  const isLoggedIn = useSelector(state => state.isLoggedIn);  // Get login status from redux
-  const dispatch = useDispatch();  // Get dispatch function from redux
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const usernameFromState = useSelector(state => state.auth.username);
+  const dispatch = useDispatch();
 
   const goToLogin = () => {
     navigate('/login');
@@ -26,7 +27,7 @@ const TopMenu = ({ userName }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('role');
-    dispatch({ type: 'LOGOUT' });  // Dispatch LOGOUT action to redux
+    dispatch({ type: 'LOGOUT' });
     navigate('/login');
 };
 
@@ -40,7 +41,7 @@ const TopMenu = ({ userName }) => {
           </Link>
         </Typography>
         <Typography variant="h6" style={{ marginRight: '1rem' }}>
-          {userName ? `Welcome, ${userName}!` : ''}
+          {usernameFromState ? `Welcome, ${usernameFromState}!` : ''}
         </Typography>
         {!isLoggedIn && <Button color="inherit" onClick={goToLogin}>Login</Button>}
         {!isLoggedIn && <Button color="inherit" onClick={goToRegister}>Register</Button>}
