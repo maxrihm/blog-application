@@ -1,4 +1,5 @@
 ﻿using BlogService.Data;
+using BlogService.Dto;
 using BlogService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;  // <-- Add this line
@@ -18,10 +19,10 @@ namespace BlogService.Controllers
 
         // POST: api/Likes
         [HttpPost]
-        public async Task<ActionResult> AddLike(int postId, int userId)
+        public async Task<ActionResult> AddLike([FromBody] LikeDto likeDto)
         {
             // Check if user has already liked the post
-            var existingLike = await _context.Likes.FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
+            var existingLike = await _context.Likes.FirstOrDefaultAsync(l => l.PostId == likeDto.PostId && l.UserId == likeDto.UserId);
 
             if (existingLike != null)
             {
@@ -31,15 +32,15 @@ namespace BlogService.Controllers
             // Add new like to Likes table
             var newLike = new Like
             {
-                PostId = postId,
-                UserId = userId,
+                PostId = likeDto.PostId,  // <- Corrected here
+                UserId = likeDto.UserId,  // <- And here
                 DateLiked = DateTime.Now
             };
 
             _context.Likes.Add(newLike);
 
             // Increment TotalLikes in the Post
-            var post = await _context.Posts.FindAsync(postId);
+            var post = await _context.Posts.FindAsync(likeDto.PostId);  // <- Corrected here too
             if (post != null)
             {
                 post.TotalLikes += 1;
