@@ -19,36 +19,38 @@ namespace BlogService.Controllers
 
         // POST: api/Likes
         [HttpPost]
-        public async Task<ActionResult> AddLike([FromBody] LikeDto likeDto)
+        public async Task<ActionResult> ToggleLike([FromBody] LikeDto likeDto)
         {
-            // Check if user has already liked the post
             var existingLike = await _context.Likes.FirstOrDefaultAsync(l => l.PostId == likeDto.PostId && l.UserId == likeDto.UserId);
+
+            var post = await _context.Posts.FindAsync(likeDto.PostId);
+            if (post == null)
+            {
+                return NotFound(new { message = "Post not found." });
+            }
 
             if (existingLike != null)
             {
-                return BadRequest("User has already liked this post.");
+                _context.Likes.Remove(existingLike);
+                post.TotalLikes -= 1;
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Unliked successfully." });
             }
-
-            // Add new like to Likes table
-            var newLike = new Like
+            else
             {
-                PostId = likeDto.PostId,  // <- Corrected here
-                UserId = likeDto.UserId,  // <- And here
-                DateLiked = DateTime.Now
-            };
+                var newLike = new Like
+                {
+                    PostId = likeDto.PostId,
+                    UserId = likeDto.UserId,
+                    DateLiked = DateTime.Now
+                };
 
-            _context.Likes.Add(newLike);
-
-            // Increment TotalLikes in the Post
-            var post = await _context.Posts.FindAsync(likeDto.PostId);  // <- Corrected here too
-            if (post != null)
-            {
+                _context.Likes.Add(newLike);
                 post.TotalLikes += 1;
+
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Liked successfully." });
             }
-
-            await _context.SaveChangesAsync();
-
-            return Ok("Liked successfully.");
         }
     }
 }

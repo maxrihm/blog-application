@@ -1,4 +1,5 @@
 ﻿using BlogService.Data;
+using BlogService.Dto;
 using BlogService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,18 +28,28 @@ namespace BlogService.Controllers
             return await _context.Posts.ToListAsync();
         }
 
-        // GET: api/Posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        public async Task<ActionResult<PostDetailsDto>> GetPostDetails(int id, [FromQuery] int currentUserId)
         {
             var post = await _context.Posts.FindAsync(id);
+            if (post == null) return NotFound();
 
-            if (post == null)
+            // Check if the post is liked by the current user
+            var isLikedByUser = await _context.Likes.AnyAsync(l => l.PostId == id && l.UserId == currentUserId);
+
+            var postDto = new PostDetailsDto
             {
-                return NotFound();
-            }
+                PostId = post.PostId,
+                UserId = post.UserId,
+                UserName = post.UserName,
+                Title = post.Title,
+                Content = post.Content,
+                DateCreated = post.DateCreated,
+                TotalLikes = post.TotalLikes,
+                IsLikedByUser = isLikedByUser
+            };
 
-            return post;
+            return postDto;
         }
 
         // POST: api/Posts
