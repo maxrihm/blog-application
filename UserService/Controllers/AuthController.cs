@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UserService.Models;
-using UserService.Dto;
+using MongoDB.Driver;
+using System;
+using System.Threading.Tasks;
 using UserService.Data;
+using UserService.Dto;
+using UserService.Models;
 
 namespace UserService.Controllers
 {
@@ -12,10 +15,12 @@ namespace UserService.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly MongoDbContext _mongoDbContext;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(ApplicationDbContext context, MongoDbContext mongoDbContext)
         {
             _context = context;
+            _mongoDbContext = mongoDbContext;
         }
 
         [HttpGet("login")]
@@ -28,8 +33,12 @@ namespace UserService.Controllers
 
             if (user == null)
             {
+                _mongoDbContext.Logs.InsertOne(new Log { Message = $"Login failed for username {User.Identity.Name}. User not found.", Date = DateTime.UtcNow }); // Logging failed login
                 return NotFound(new { Success = false, Message = "User not found." });
             }
+
+            // Logging successful login
+            _mongoDbContext.Logs.InsertOne(new Log { Message = $"User {user.Username} logged in.", Date = DateTime.UtcNow });
 
             return Ok(new
             {
@@ -39,6 +48,7 @@ namespace UserService.Controllers
                 Role = user.Role?.Name  // Send the role name
             });
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
@@ -56,6 +66,9 @@ namespace UserService.Controllers
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
+
+                // Log the user registration in MongoDB
+                _mongoDbContext.Logs.InsertOne(new Log { Message = $"User {userDto.Username} registered.", Date = DateTime.UtcNow });
 
                 return Ok(new { Success = true, Message = "User registered successfully." });
 

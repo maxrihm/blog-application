@@ -13,6 +13,8 @@ builder.Services.AddAuthentication("BasicAuthentication")
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddSingleton(new MongoDbContext(builder.Configuration.GetConnectionString("MongoDbConnection"), "UserLogs"));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
