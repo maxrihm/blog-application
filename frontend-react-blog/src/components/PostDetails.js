@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import styles from './PostDetails.module.css';
 
 const PostDetails = () => {
   const { postId } = useParams();
@@ -45,24 +46,27 @@ const PostDetails = () => {
   if (!post) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>{post.title}</h2>
-      <p>{post.content}</p>
-      <p>
+    <div className={styles.container}>
+      <h2 className={styles.title}>{post.title}</h2>
+      <p className={styles.content}>{post.content}</p>
+      <p className={styles.details}>
         By: {post.userName}
       </p>
-      <p>
+      <p className={styles.details}>
         Date: {new Date(post.dateCreated).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
         })}
       </p>
-      <p>
+      <p className={styles.details}>
         Likes: {post.totalLikes}
       </p>
-      <button onClick={handleToggleLike}>
-        {isLiked ? "❤️" : "🤍"}  {/* Heart icon changes based on like status */}
+      <button 
+        onClick={handleToggleLike} 
+        className={`${styles.likeButton} ${isLiked && styles.liked}`}
+      >
+        {isLiked ? "UnLike ❤️" : "Like 🤍"}
       </button>
     </div>
   );
