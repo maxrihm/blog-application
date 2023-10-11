@@ -4,6 +4,7 @@ using BlogService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogService.Controllers
@@ -23,9 +24,20 @@ namespace BlogService.Controllers
 
         // GET: api/Posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+        public async Task<ActionResult<object>> GetPosts([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
         {
-            return await _context.Posts.ToListAsync();
+            var totalPosts = await _context.Posts.CountAsync();
+
+            var posts = await _context.Posts
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new 
+            {
+                posts = posts,
+                totalCount = totalPosts
+            };
         }
 
         [HttpGet("{id}")]
@@ -62,7 +74,6 @@ namespace BlogService.Controllers
 
             return new CreatedAtRouteResult(new { id = post.PostId }, post);
         }
-
 
         // ... other API endpoints ...
     }
