@@ -31,7 +31,11 @@ function WritePost() {
             .then(response => response.json())
             .then(data => {
                 alert('Post created successfully!');
-                navigate('/'); // navigate to home page after successful post creation
+                if (data && data.postId) {
+                    navigate(`/post/${data.postId}`); // navigate to the specific post page using the `postId`
+                } else {
+                    navigate('/'); // fallback to home page if postId is not available
+                }
             })
             .catch(error => {
                 console.error("There was an error creating the post", error);

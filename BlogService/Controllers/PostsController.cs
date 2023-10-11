@@ -60,7 +60,7 @@ namespace BlogService.Controllers
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPost", new { id = post.PostId }, post);
+            return new CreatedAtRouteResult(new { id = post.PostId }, post);
         }
 
 

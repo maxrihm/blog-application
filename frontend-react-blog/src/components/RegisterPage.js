@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextField, Button, Grid, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // add useNavigate hook
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -34,7 +36,7 @@ const RegisterPage = () => {
     })
     .then(data => {
        alert(data.Message || 'Registered successfully!');
-       // Optionally navigate to login or home page after successful registration
+       navigate('/login'); // navigate to login page after successful registration
     })
     .catch(error => {
       console.error("Error Occurred:", error.message); 
