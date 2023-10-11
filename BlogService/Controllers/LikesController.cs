@@ -3,6 +3,7 @@ using BlogService.Dto;
 using BlogService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;  // <-- Add this line
+using Serilog; // <-- Add this line
 
 namespace BlogService.Controllers
 {
@@ -21,11 +22,13 @@ namespace BlogService.Controllers
         [HttpPost]
         public async Task<ActionResult> ToggleLike([FromBody] LikeDto likeDto)
         {
+            Log.Information("ToggleLike called for PostId: {PostId}, UserId: {UserId}", likeDto.PostId, likeDto.UserId);
             var existingLike = await _context.Likes.FirstOrDefaultAsync(l => l.PostId == likeDto.PostId && l.UserId == likeDto.UserId);
 
             var post = await _context.Posts.FindAsync(likeDto.PostId);
             if (post == null)
             {
+                Log.Warning("Post not found for PostId: {PostId}", likeDto.PostId);
                 return NotFound(new { message = "Post not found." });
             }
 
