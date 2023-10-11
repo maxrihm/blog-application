@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Post from './Post';
 import Paginate from 'react-paginate';
 
+
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -27,7 +28,7 @@ const PostList = () => {
       {posts.map((post) => (
         <Post key={post.postId} post={post} />
       ))}
-      <Paginate
+    <Paginate
         previousLabel={"previous"}
         nextLabel={"next"}
         breakLabel={"..."}
@@ -37,9 +38,9 @@ const PostList = () => {
         pageRangeDisplayed={5}
         onPageChange={handlePageChange}
         containerClassName={"pagination"}
-        subContainerClassName={"pages pagination"}
         activeClassName={"active"}
-      />
+    />
+
     </div>
   );
 };

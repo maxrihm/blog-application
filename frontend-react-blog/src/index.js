@@ -7,6 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { connectSignalR } from './actions/signalRActions';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import './App.css';  // Assuming your styles are in App.css
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
