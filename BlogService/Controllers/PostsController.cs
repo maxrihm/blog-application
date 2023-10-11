@@ -111,7 +111,12 @@ namespace BlogService.Controllers
                 return Forbid("You are not authorized to delete this post.");
             }
 
+            // Remove all comments associated with the post
+            _context.Comments.RemoveRange(_context.Comments.Where(c => c.PostId == id));
+
+            // Remove all likes associated with the post
             _context.Likes.RemoveRange(_context.Likes.Where(l => l.PostId == id));
+
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
 

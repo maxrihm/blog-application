@@ -9,6 +9,8 @@ const PostDetails = () => {
   const loggedInUserId = useSelector(state => state.auth.userId); // get userId from auth state
   const loggedInUserName = useSelector(state => state.auth.username); // Extracting username from the Redux store
   const [isLiked, setIsLiked] = useState(false);  // State to track if post is liked by user
+  const [comments, setComments] = useState([]);   // State to hold the list of comments
+  const [newComment, setNewComment] = useState(''); // State to hold the value of a new comment
   const navigate = useNavigate();  // useNavigate is used instead of useHistory
 
   useEffect(() => {
@@ -19,6 +21,13 @@ const PostDetails = () => {
         setIsLiked(data.isLikedByUser);
       });
   }, [postId, loggedInUserId]);
+
+  useEffect(() => {
+    // Fetch comments when the component mounts
+    fetch(`https://localhost:7046/api/Comments/${postId}`)
+      .then(response => response.json())
+      .then(data => setComments(data));
+  }, [postId]);
 
   const handleToggleLike = () => {
     fetch('https://localhost:7046/api/Likes', {
@@ -76,6 +85,26 @@ const PostDetails = () => {
     }
   };
 
+  const handleAddComment = () => {
+    const comment = {
+      PostId: postId,
+      UserId: loggedInUserId,
+      UserName: loggedInUserName,  // Send the username with the request
+      Content: newComment
+    };
+
+    fetch('https://localhost:7046/api/Comments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(comment)
+    })
+      .then(response => response.json())
+      .then(data => {
+        setComments(prevComments => [...prevComments, data]);
+        setNewComment(''); // Clear the comment input
+      });
+  };
+
   if (!post) return <p>Loading...</p>;
 
   return (
@@ -106,6 +135,23 @@ const PostDetails = () => {
           Delete Post
         </button>
       )}
+
+      <div className={styles.commentsSection}>
+        <h3>Comments</h3>
+        {comments.map(comment => (
+          <div key={comment.commentId} className={styles.comment}>
+            <p><strong>{comment.userName}</strong>: {comment.content}</p>
+            <small>{new Date(comment.dateCreated).toLocaleString()}</small>
+          </div>
+        ))}
+
+        <textarea
+          value={newComment}
+          onChange={e => setNewComment(e.target.value)}
+          placeholder="Write a comment..."
+        ></textarea>
+        <button onClick={handleAddComment}>Add Comment</button>
+      </div>
     </div>
   );
 };
