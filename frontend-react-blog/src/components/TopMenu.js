@@ -37,16 +37,16 @@ const TopMenu = () => {
       <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            React Blog
+            Tech Topics Blog🧑‍💻
           </Link>
         </Typography>
         <Typography variant="h6" style={{ marginRight: '1rem' }}>
           {usernameFromState ? `Welcome, ${usernameFromState}!` : ''}
         </Typography>
-        {!isLoggedIn && <Button color="inherit" onClick={goToLogin}>Login</Button>}
-        {!isLoggedIn && <Button color="inherit" onClick={goToRegister}>Register</Button>}
-        {isLoggedIn && <Button color="inherit" onClick={goToWritePost}>Write Post</Button>}
-        {isLoggedIn && <Button color="inherit" onClick={handleLogout}>Logout</Button>}
+        {!isLoggedIn && <Button color="inherit" onClick={goToLogin}>Login🔒</Button>}
+        {!isLoggedIn && <Button color="inherit" onClick={goToRegister}>Register✅</Button>}
+        {isLoggedIn && <Button color="inherit" onClick={goToWritePost}>Write Post📝</Button>}
+        {isLoggedIn && <Button color="inherit" onClick={handleLogout}>Logout❌</Button>}
       </Toolbar>
     </AppBar>
   );
