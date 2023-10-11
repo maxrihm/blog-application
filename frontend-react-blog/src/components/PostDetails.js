@@ -7,6 +7,7 @@ const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const loggedInUserId = useSelector(state => state.auth.userId); // get userId from auth state
+  const loggedInUserName = useSelector(state => state.auth.username); // Extracting username from the Redux store
   const [isLiked, setIsLiked] = useState(false);  // State to track if post is liked by user
 
   useEffect(() => {
@@ -22,7 +23,13 @@ const PostDetails = () => {
     fetch('https://localhost:7046/api/Likes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ postId: post.postId, userId: loggedInUserId })
+      body: JSON.stringify({ 
+        postId: post.postId, 
+        userId: loggedInUserId,
+        postTitle: post.title,            // Sending post title
+        postAuthor: post.userName,        // Sending post author
+        loggedInUserName: loggedInUserName // Using the extracted username
+      })
     })
     .then(res => res.json())
     .then(data => {

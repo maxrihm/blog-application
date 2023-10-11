@@ -37,7 +37,7 @@ const TopMenu = () => {
       <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            Tech Topics Blog🧑‍💻
+            Tech Topics Blog💻
           </Link>
         </Typography>
         <Typography variant="h6" style={{ marginRight: '1rem' }}>

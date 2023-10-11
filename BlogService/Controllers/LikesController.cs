@@ -2,8 +2,8 @@
 using BlogService.Dto;
 using BlogService.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;  // <-- Add this line
-using Serilog; // <-- Add this line
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace BlogService.Controllers
 {
@@ -54,8 +54,11 @@ namespace BlogService.Controllers
                 await _context.SaveChangesAsync();
 
                 // Send a notification to RabbitMQ
-                var publisher = new RabbitMQPublisher("localhost");  // Adjust the hostname if needed.
-                var notificationMessage = $"Post {likeDto.PostId} was liked!";
+                var publisher = new RabbitMQPublisher("localhost");
+
+                // Constructing the new message
+                var notificationMessage = $"{likeDto.LoggedInUserName} liked the post titled \"{likeDto.PostTitle}\" written by {likeDto.PostAuthor} ❤️";
+                
                 publisher.PublishMessage("likeNotificationQueue", notificationMessage);
 
                 return Ok(new { message = "Liked successfully." });
