@@ -25,7 +25,9 @@ const RegisterPage = () => {
        if (response.status === 200) {
            return response.json();
        } else if (response.status === 400) {
-           throw new Error('Username is already taken.');
+           return response.json().then(data => {
+               throw new Error(data.errors ? Object.values(data.errors).join('\n') : 'Error registering. Please try again.');
+           });
        } else {
            throw new Error('Error registering. Please try again.');
        }

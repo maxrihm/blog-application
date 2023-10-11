@@ -50,20 +50,24 @@ namespace UserService.Controllers
             });
         }
 
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
+            // 1. Check ModelState first
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { Success = false, Message = "Validation failed.", Errors = ModelState.Values.SelectMany(v => v.Errors) });
+                var validationErrors = ModelState.Values.SelectMany(v => v.Errors)
+                                                       .Select(e => e.ErrorMessage)
+                                                       .ToList();
+                return BadRequest(new { Success = false, Message = "Validation failed.", Errors = validationErrors });
             }
+
+            // 2. Then check for duplicate usernames
+            if (await _context.Users.AnyAsync(x => x.Username == userDto.Username))
+                return BadRequest(new { Success = false, Message = "Username is already taken." });
 
             try
             {
-                if (await _context.Users.AnyAsync(x => x.Username == userDto.Username))
-                    return BadRequest(new { Success = false, Message = "Username is already taken." });
-
                 var user = new User
                 {
                     Username = userDto.Username,
