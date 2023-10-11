@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'; // useNavigate is imported instead of useHistory
 import { useSelector } from 'react-redux';
 import styles from './PostDetails.module.css';
 
@@ -9,6 +9,7 @@ const PostDetails = () => {
   const loggedInUserId = useSelector(state => state.auth.userId); // get userId from auth state
   const loggedInUserName = useSelector(state => state.auth.username); // Extracting username from the Redux store
   const [isLiked, setIsLiked] = useState(false);  // State to track if post is liked by user
+  const navigate = useNavigate();  // useNavigate is used instead of useHistory
 
   useEffect(() => {
     fetch(`https://localhost:7046/api/Posts/${postId}?currentUserId=${loggedInUserId}`)
@@ -23,31 +24,56 @@ const PostDetails = () => {
     fetch('https://localhost:7046/api/Likes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        postId: post.postId, 
+      body: JSON.stringify({
+        postId: post.postId,
         userId: loggedInUserId,
         postTitle: post.title,            // Sending post title
         postAuthor: post.userName,        // Sending post author
         loggedInUserName: loggedInUserName // Using the extracted username
       })
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.message === "Liked successfully.") {
-        setIsLiked(true);
-        setPost(prevPost => {
-          return { ...prevPost, totalLikes: prevPost.totalLikes + 1 };
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === "Liked successfully.") {
+          setIsLiked(true);
+          setPost(prevPost => {
+            return { ...prevPost, totalLikes: prevPost.totalLikes + 1 };
+          });
+        } else if (data.message === "Unliked successfully.") {
+          setIsLiked(false);
+          setPost(prevPost => {
+            return { ...prevPost, totalLikes: prevPost.totalLikes - 1 };
+          });
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => console.error("Error:", error));
+  };
+
+  const handleDeletePost = () => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      fetch(`https://localhost:7046/api/Posts/${post.postId}?currentUserId=${loggedInUserId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(res => {
+          if (res.ok) {
+            alert("Post deleted successfully.");
+            navigate("/");  // navigate is used instead of history.push
+          } else {
+            return res.json().then(err => {
+              throw err;
+            });
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert(error.message || "There was an error deleting the post.");
         });
-      } else if (data.message === "Unliked successfully.") {
-        setIsLiked(false);
-        setPost(prevPost => {
-          return { ...prevPost, totalLikes: prevPost.totalLikes - 1 };
-        });
-      } else {
-        alert(data.message);
-      }
-    })
-    .catch(error => console.error("Error:", error));
+    }
   };
 
   if (!post) return <p>Loading...</p>;
@@ -69,12 +95,17 @@ const PostDetails = () => {
       <p className={styles.details}>
         Likes: {post.totalLikes}
       </p>
-      <button 
-        onClick={handleToggleLike} 
+      <button
+        onClick={handleToggleLike}
         className={`${styles.likeButton} ${isLiked && styles.liked}`}
       >
         {isLiked ? "UnLike ❤️" : "Like 🤍"}
       </button>
+      {post.userName === loggedInUserName && (
+        <button onClick={handleDeletePost} className={styles.deleteButton}>
+          Delete Post
+        </button>
+      )}
     </div>
   );
 };

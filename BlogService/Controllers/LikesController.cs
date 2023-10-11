@@ -1,4 +1,5 @@
-﻿using BlogService.Data;
+﻿// BlogService/Controllers/LikesController.cs
+using BlogService.Data;
 using BlogService.Dto;
 using BlogService.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -55,10 +56,7 @@ namespace BlogService.Controllers
 
                 // Send a notification to RabbitMQ
                 var publisher = new RabbitMQPublisher("localhost");
-
-                // Constructing the new message
-                var notificationMessage = $"{likeDto.LoggedInUserName} liked the post titled \"{likeDto.PostTitle}\" written by {likeDto.PostAuthor} ❤️";
-                
+                var notificationMessage = $"Post \"{likeDto.PostTitle}\" by {likeDto.PostAuthor} was liked by {likeDto.LoggedInUserName}! 👍";
                 publisher.PublishMessage("likeNotificationQueue", notificationMessage);
 
                 return Ok(new { message = "Liked successfully." });

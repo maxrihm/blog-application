@@ -43,7 +43,7 @@ namespace BlogService.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            var result = new 
+            var result = new
             {
                 posts = posts,
                 totalCount = totalPosts
@@ -105,6 +105,36 @@ namespace BlogService.Controllers
             return new CreatedAtRouteResult(new { id = post.PostId }, post);
         }
 
+        // DELETE: api/Posts/{id}
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePost(int id, [FromQuery] int currentUserId)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the current user is the author of the post
+            if (post.UserId != currentUserId)
+            {
+                return Forbid("You are not authorized to delete this post.");
+            }
+
+            // Delete associated likes
+            var likesToDelete = _context.Likes.Where(l => l.PostId == id);
+            _context.Likes.RemoveRange(likesToDelete);
+
+            // Delete the post
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+
+            // Invalidate caches
+            _cache.Remove($"post_{id}_{currentUserId}"); // Clear cache for the specific post details
+            _cache.Remove("posts_0_10"); // Clear cache for the first page of post listings. Consider invalidating all pages.
+
+            return NoContent();
+        }
         // ... other API endpoints ...
     }
 }
