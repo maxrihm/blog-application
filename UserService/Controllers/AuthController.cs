@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using UserService.Data;
 using UserService.Dto;
@@ -53,6 +54,11 @@ namespace UserService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { Success = false, Message = "Validation failed.", Errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
             try
             {
                 if (await _context.Users.AnyAsync(x => x.Username == userDto.Username))
