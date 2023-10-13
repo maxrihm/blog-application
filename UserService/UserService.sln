@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService.csproj", "{55D864F5-0030-41A9-BD17-951FA3CC9D47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserService.csproj", "{55D864F5-0030-41A9-BD17-951FA3CC9D47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Tests", "..\UserService.Tests\UserService.Tests.csproj", "{0D7B8148-93B7-478A-8941-C5294126DB6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{55D864F5-0030-41A9-BD17-951FA3CC9D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55D864F5-0030-41A9-BD17-951FA3CC9D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55D864F5-0030-41A9-BD17-951FA3CC9D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D7B8148-93B7-478A-8941-C5294126DB6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D7B8148-93B7-478A-8941-C5294126DB6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D7B8148-93B7-478A-8941-C5294126DB6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D7B8148-93B7-478A-8941-C5294126DB6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
