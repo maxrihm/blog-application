@@ -9,10 +9,20 @@ using Xunit;
 
 namespace BlogService.Tests
 {
+    /// <summary>
+    /// Provides a fixture for testing controllers.
+    /// </summary>
     public class ControllerTestFixture
     {
+        /// <summary>
+        /// Gets the mock context for the controller.
+        /// </summary>
         public BlogServiceContext MockContext { get; private set; }
         
+        /// <summary>
+        /// Initializes a new instance of the ControllerTestFixture class.
+        /// Creates an in-memory database context for testing.
+        /// </summary>
         public ControllerTestFixture()
         {
             var options = new DbContextOptionsBuilder<BlogServiceContext>()
@@ -31,6 +41,9 @@ namespace BlogService.Tests
             _context = fixture.MockContext;
         }
 
+        /// <summary>
+        /// Tests if the GetCommentsForPost method returns comments for a given post.
+        /// </summary>
         [Fact]
         public void GetCommentsForPost_ShouldReturnComments()
         {
@@ -41,6 +54,9 @@ namespace BlogService.Tests
             // Add more assertions as needed...
         }
 
+        /// <summary>
+        /// Tests if the GetCommentsForPost method returns an empty list when there are no comments for a given post.
+        /// </summary>
         [Fact]
         public void GetCommentsForPost_ShouldReturnEmptyList_WhenNoCommentsExist()
         {
@@ -62,6 +78,9 @@ namespace BlogService.Tests
             _context = fixture.MockContext;
         }
 
+        /// <summary>
+        /// Tests if the ToggleLike method functions correctly and returns an appropriate response when a like action is performed.
+        /// </summary>
         [Fact]
         public async Task ToggleLike_ShouldReturnLikedSuccessfully()
         {
@@ -89,6 +108,9 @@ namespace BlogService.Tests
             _context = fixture.MockContext;
         }
 
+        /// <summary>
+        /// Tests if the GetPosts method retrieves posts successfully.
+        /// </summary>
         [Fact]
         public async Task GetPosts_ShouldReturnPosts()
         {
