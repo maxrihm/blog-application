@@ -114,6 +114,52 @@ UserService.Tests/.vs/
 UserService.Tests/bin/
 UserService.Tests/obj/
 
+## BlogService.Tests
+BlogService.Tests/*.runtimeconfig.json.dev
+BlogService.Tests/*.deps
+BlogService.Tests/bin/
+BlogService.Tests/obj/
+BlogService.Tests/*.swp
+BlogService.Tests/*.swo
+BlogService.Tests/*.[Rr]e[Ss]harper
+BlogService.Tests/nccompile*
+BlogService.Tests/*.bak
+BlogService.Tests/*.pidb
+BlogService.Tests/*.dbmdl
+BlogService.Tests/*.dbproj.schemaview
+BlogService.Tests/*.pfx
+BlogService.Tests/*.publishsettings
+BlogService.Tests/Thumbs.db
+BlogService.Tests/ehthumbs.db
+BlogService.Tests/Desktop.ini
+BlogService.Tests/$RECYCLE.BIN/
+BlogService.Tests/.vscode/
+BlogService.Tests/*.code-workspace
+BlogService.Tests/.idea/
+BlogService.Tests/*.exe
+BlogService.Tests/*.dll
+BlogService.Tests/*.pdb
+BlogService.Tests/_TDS_
+BlogService.Tests/_ReSharper*/
+BlogService.Tests/*.[Rr]e[Ss]harper
+BlogService.Tests/.JustCode
+BlogService.Tests/_TeamCity*
+BlogService.Tests/*.dotCover
+BlogService.Tests/_NCrunch_*
+BlogService.Tests/.*crunch*.local.xml
+BlogService.Tests/*.mm.*
+BlogService.Tests/AutoTest.Net/
+BlogService.Tests/Thumbs.db
+BlogService.Tests/ehthumbs.db
+BlogService.Tests/.DS_Store
+BlogService.Tests/*.swp
+BlogService.Tests/Thumbs.db
+BlogService.Tests/ehthumbs.db
+BlogService.Tests/.vscode/
+BlogService.Tests/.vs/
+BlogService.Tests/bin/
+BlogService.Tests/obj/
+
 docker-postgres-userservice/
 
 ## BlogService
