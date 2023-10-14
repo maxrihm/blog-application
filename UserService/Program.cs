@@ -26,6 +26,8 @@ builder.Services.AddControllers()
         fv.RegisterValidatorsFromAssemblyContaining<UserDtoValidator>();
     });
 
+builder.Services.AddMemoryCache(); // Register MemoryCache service
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -40,15 +42,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(builder =>
-   builder.WithOrigins("http://localhost:3000") // Change to your React app's URL
-          .AllowAnyMethod()
-          .AllowAnyHeader());
+    builder.WithOrigins("http://localhost:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader());
 
 app.UseHttpsRedirection();
+app.UseMiddleware<RateLimitingMiddleware>();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

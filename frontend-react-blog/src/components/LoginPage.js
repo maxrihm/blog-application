@@ -21,9 +21,21 @@ function LoginPage() {
         "Authorization": "Basic " + btoa(username + ":" + password)  // Basic authentication header
       }
     })
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 429) {
+        throw new Error("Too many requests, try in 10 seconds.");
+      } else if (response.status === 401) {
+        throw new Error("Wrong username or password.");
+      } else if (!response.ok) {
+        throw new Error(`Server responded with a ${response.status} status.`);
+      }
+      return response.json();
+    })
     .then(data => {
-      if (data.success) {
+      if (!data.success) {
+        alert(data.Message);
+        // Handle failed login (though this shouldn't happen if you've handled status codes above)
+      } else {
           dispatch({ 
               type: 'LOGIN', 
               payload: {
@@ -39,13 +51,11 @@ function LoginPage() {
   
           alert('Logged in!');
           navigate('/'); // navigate to home page after successful login
-      } else {
-          alert(data.message || 'Error logging in');
       }
-  })
+    })
     .catch(error => {
-      console.error("There was an error logging in", error);
-      alert('Error logging in. Please try again.');
+      alert(error.message);
+      // Display the error to the user, maybe using a notification or modal dialog.
     });
   };
 
