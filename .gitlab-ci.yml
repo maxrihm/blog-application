@@ -2,6 +2,7 @@ image: mcr.microsoft.com/dotnet/sdk:6.0  # .NET 6 SDK Docker image
 
 stages:
   - build
+  - test
 
 variables:
   BUILD_DIR: 'bin/Release'
@@ -17,6 +18,14 @@ build-user-service:
   artifacts:
     paths:
       - UserService/$BUILD_DIR/**
+
+# .NET Test for UserService
+test-user-service:
+  stage: test
+  script:
+    - cd UserService.Tests
+    - dotnet restore UserService.Tests.csproj
+    - dotnet test --no-restore
 
 # .NET Restore, Build, and Publish for NotificationService
 build-notification-service:
@@ -41,3 +50,11 @@ build-blog-service:
   artifacts:
     paths:
       - BlogService/$BUILD_DIR/**
+
+# .NET Test for BlogService
+test-blog-service:
+  stage: test
+  script:
+    - cd BlogService.Tests
+    - dotnet restore BlogService.Tests.csproj
+    - dotnet test --no-restore
