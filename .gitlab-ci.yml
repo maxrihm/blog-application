@@ -1,0 +1,27 @@
+image: mcr.microsoft.com/dotnet/sdk:6.0  # .NET 6 SDK Docker image 
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  PROJECT_DIR: 'UserService'
+  PROJECT_NAME: 'UserService'
+  BUILD_DIR: 'UserService/bin/Release'
+
+# .NET Restore, Build, and Publish
+build:
+  stage: build
+  script:
+    - cd $PROJECT_DIR
+    - dotnet restore $PROJECT_NAME.csproj
+    - dotnet build $PROJECT_NAME.csproj -c Release -o $BUILD_DIR
+    - dotnet publish $PROJECT_NAME.csproj -c Release -o $BUILD_DIR
+  artifacts:
+    paths:
+      - $BUILD_DIR/**
+
+# For the 'test' and 'deploy' stages, you would add similar blocks of YAML 
+# depending on what you want to do. If you don't want to perform any tests 
+# or deployment at this stage, you can leave them out.
