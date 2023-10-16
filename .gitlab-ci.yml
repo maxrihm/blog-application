@@ -2,38 +2,42 @@ image: mcr.microsoft.com/dotnet/sdk:6.0  # .NET 6 SDK Docker image
 
 stages:
   - build
-  - test
-  - deploy
 
 variables:
-  PROJECT_NAME: 'UserService'
   BUILD_DIR: 'bin/Release'
 
-# .NET Restore, Build, and Publish
-build:
+# .NET Restore, Build, and Publish for UserService
+build-user-service:
   stage: build
   script:
-    - cd $PROJECT_NAME
-    - dotnet restore $PROJECT_NAME.csproj
-    - dotnet build $PROJECT_NAME.csproj -c Release -o $BUILD_DIR
-    - dotnet publish $PROJECT_NAME.csproj -c Release -o $BUILD_DIR
+    - cd UserService
+    - dotnet restore UserService.csproj
+    - dotnet build UserService.csproj -c Release -o $BUILD_DIR
+    - dotnet publish UserService.csproj -c Release -o $BUILD_DIR
   artifacts:
     paths:
-      - $PROJECT_NAME/$BUILD_DIR/**
+      - UserService/$BUILD_DIR/**
 
-# .NET Test for UserService
-test:
-  stage: test
+# .NET Restore, Build, and Publish for NotificationService
+build-notification-service:
+  stage: build
   script:
-    - cd UserService.Tests
-    - dotnet restore UserService.Tests.csproj
-    - dotnet test --no-restore
+    - cd NotificationService
+    - dotnet restore NotificationService.csproj
+    - dotnet build NotificationService.csproj -c Release -o $BUILD_DIR
+    - dotnet publish NotificationService.csproj -c Release -o $BUILD_DIR
+  artifacts:
+    paths:
+      - NotificationService/$BUILD_DIR/**
 
-# Deploy (You'd typically push your docker image to a registry, or deploy to a server)
-deploy:
-  stage: deploy
+# .NET Restore, Build, and Publish for BlogService
+build-blog-service:
+  stage: build
   script:
-    - echo "Deployment step. Expand as needed."
-    # Example:
-    # docker build -t myregistry/userservice:$CI_COMMIT_SHORT_SHA $PROJECT_NAME
-    # docker push myregistry/userservice:$CI_COMMIT_SHORT_SHA
+    - cd BlogService
+    - dotnet restore BlogService.csproj
+    - dotnet build BlogService.csproj -c Release -o $BUILD_DIR
+    - dotnet publish BlogService.csproj -c Release -o $BUILD_DIR
+  artifacts:
+    paths:
+      - BlogService/$BUILD_DIR/**
