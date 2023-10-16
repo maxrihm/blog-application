@@ -6,22 +6,34 @@ stages:
   - deploy
 
 variables:
-  PROJECT_DIR: 'UserService'
   PROJECT_NAME: 'UserService'
-  BUILD_DIR: 'UserService/bin/Release'
+  BUILD_DIR: 'bin/Release'
 
 # .NET Restore, Build, and Publish
 build:
   stage: build
   script:
-    - cd $PROJECT_DIR
+    - cd $PROJECT_NAME
     - dotnet restore $PROJECT_NAME.csproj
     - dotnet build $PROJECT_NAME.csproj -c Release -o $BUILD_DIR
     - dotnet publish $PROJECT_NAME.csproj -c Release -o $BUILD_DIR
   artifacts:
     paths:
-      - $BUILD_DIR/**
+      - $PROJECT_NAME/$BUILD_DIR/**
 
-# For the 'test' and 'deploy' stages, you would add similar blocks of YAML 
-# depending on what you want to do. If you don't want to perform any tests 
-# or deployment at this stage, you can leave them out.
+# .NET Test for UserService
+test:
+  stage: test
+  script:
+    - cd UserService.Tests
+    - dotnet restore UserService.Tests.csproj
+    - dotnet test --no-restore
+
+# Deploy (You'd typically push your docker image to a registry, or deploy to a server)
+deploy:
+  stage: deploy
+  script:
+    - echo "Deployment step. Expand as needed."
+    # Example:
+    # docker build -t myregistry/userservice:$CI_COMMIT_SHORT_SHA $PROJECT_NAME
+    # docker push myregistry/userservice:$CI_COMMIT_SHORT_SHA
