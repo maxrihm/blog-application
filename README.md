@@ -1,4 +1,5 @@
-![Static Badge](https://img.shields.io/badge/GitLab%20CI%2FCD-blue?logo=gitlab&link=https%3A%2F%2Fgitlab.com%2Fmaxrihm%2Fblog-application)
+[![Static Badge](https://img.shields.io/badge/GitLab%20CI%2FCD-blue?logo=gitlab)](https://gitlab.com/maxrihm/blog-application)
+
 
 # Project Checklist
 
