@@ -38,16 +38,10 @@ services:
     ports:
       - "5432:5432"
 
-  frontend-react-app:
-    container_name: frontend_container
-    image: frontend-react-app
-    ports:
-      - "3000:80"
-    restart: no
-
   userservice:
     container_name: userservice_container
     image: userservice:latest
+    command: /bin/sh -c "sleep 5 && <original-command>"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -58,6 +52,7 @@ services:
   blogservice:
     container_name: blogservice_container
     image: blogservice:latest
+    command: /bin/sh -c "sleep 5 && <original-command>"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -68,12 +63,22 @@ services:
   notificationservice:
     container_name: notificationservice_container
     image: notificationservice:latest
+    command: /bin/sh -c "sleep 15 && <original-command>"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "5006:80"
     working_dir: /app
+
+  frontend-react-app:
+    container_name: frontend_container
+    image: frontend-react-app
+    ports:
+      - "3000:80"
+    restart: no
+    depends_on:
+    - notificationservice
 
 volumes:
   mongo-config:

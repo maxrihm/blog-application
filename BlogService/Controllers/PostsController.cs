@@ -99,14 +99,14 @@ namespace BlogService.Controllers
 
         // DELETE: api/Posts/{id}
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePost(int id, [FromQuery] int currentUserId)
+        public async Task<ActionResult> DeletePost(int id, [FromQuery] int currentUserId, [FromQuery] string userRole)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null)
             {
                 return NotFound();
             }
-            if (post.UserId != currentUserId)
+            if (post.UserId != currentUserId && userRole != "Admin")
             {
                 return Forbid("You are not authorized to delete this post.");
             }

@@ -8,6 +8,7 @@ const PostDetails = () => {
   const [post, setPost] = useState(null);
   const loggedInUserId = useSelector(state => state.auth.userId); // get userId from auth state
   const loggedInUserName = useSelector(state => state.auth.username); // Extracting username from the Redux store
+  const loggedInUserRole = useSelector(state => state.auth.role); // get user role from auth state
   const [isLiked, setIsLiked] = useState(false);  // State to track if post is liked by user
   const [comments, setComments] = useState([]);   // State to hold the list of comments
   const [newComment, setNewComment] = useState(''); // State to hold the value of a new comment
@@ -62,7 +63,7 @@ const PostDetails = () => {
 
   const handleDeletePost = () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
-      fetch(`http://localhost:5097/api/Posts/${post.postId}?currentUserId=${loggedInUserId}`, {
+      fetch(`http://localhost:5097/api/Posts/${post.postId}?currentUserId=${loggedInUserId}&userRole=${loggedInUserRole}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ const PostDetails = () => {
       >
         {isLiked ? "UnLike ❤️" : "Like 🤍"}
       </button>
-      {post.userName === loggedInUserName && (
+      {(post.userName === loggedInUserName || loggedInUserRole === 'Admin') && (
         <button onClick={handleDeletePost} className={styles.deleteButton}>
           Delete Post
         </button>
