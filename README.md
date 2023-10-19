@@ -1,11 +1,14 @@
+**GitLab CI\CD**: https://gitlab.com/maxrihm/blog-application
+
+
 # Project Checklist
 
 This repository has successfully implemented the following features:
 
-- [ ] CI on GitLab or Azure DevOps
+- [X] CI on GitLab or Azure DevOps
 - [x] Use of DI container
 - [x] Working with the database through EF Core
-- [ ] Project in the form of a docker-compose file
+- [X] Project in the form of a docker-compose file
 - [x] Custom Middleware handler
 - [x] Data validation using FluentValidation
 - [x] REST + Swagger
