@@ -14,7 +14,7 @@ const PostDetails = () => {
   const navigate = useNavigate();  // useNavigate is used instead of useHistory
 
   useEffect(() => {
-    fetch(`https://localhost:7046/api/Posts/${postId}?currentUserId=${loggedInUserId}`)
+    fetch(`http://localhost:5097/api/Posts/${postId}?currentUserId=${loggedInUserId}`)
       .then((response) => response.json())
       .then((data) => {
         setPost(data);
@@ -24,13 +24,13 @@ const PostDetails = () => {
 
   useEffect(() => {
     // Fetch comments when the component mounts
-    fetch(`https://localhost:7046/api/Comments/${postId}`)
+    fetch(`http://localhost:5097/api/Comments/${postId}`)
       .then(response => response.json())
       .then(data => setComments(data));
   }, [postId]);
 
   const handleToggleLike = () => {
-    fetch('https://localhost:7046/api/Likes', {
+    fetch('http://localhost:5097/api/Likes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -62,7 +62,7 @@ const PostDetails = () => {
 
   const handleDeletePost = () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
-      fetch(`https://localhost:7046/api/Posts/${post.postId}?currentUserId=${loggedInUserId}`, {
+      fetch(`http://localhost:5097/api/Posts/${post.postId}?currentUserId=${loggedInUserId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const PostDetails = () => {
       Content: newComment
     };
 
-    fetch('https://localhost:7046/api/Comments', {
+    fetch('http://localhost:5097/api/Comments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(comment)

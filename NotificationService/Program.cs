@@ -27,8 +27,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 // Add CORS configuration
 app.UseCors(builder => 
     builder.WithOrigins("http://localhost:3000")  // Replace with your React app's URL
@@ -44,7 +42,7 @@ app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
 
 // RabbitMQ Listener
-var factory = new ConnectionFactory() { HostName = "localhost" };
+var factory = new ConnectionFactory() { HostName = "rabbitmq" };
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
 

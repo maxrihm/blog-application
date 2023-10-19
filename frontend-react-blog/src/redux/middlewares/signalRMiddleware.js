@@ -11,7 +11,7 @@ export const signalRMiddleware = store => next => async action => {
 
     if (action.type === SIGNALR_CONNECT) {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7056/notificationHub")
+            .withUrl("http://localhost:5006/notificationHub")
             .configureLogging(signalR.LogLevel.Information)
             .build();
 

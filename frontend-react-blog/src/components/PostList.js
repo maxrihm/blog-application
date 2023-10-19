@@ -11,7 +11,7 @@ const PostList = () => {
 
   useEffect(() => {
     // Fetch posts from your API with pagination
-    fetch(`https://localhost:7046/api/Posts?pageIndex=${pageIndex}&pageSize=${pageSize}`)
+    fetch(`http://localhost:5097/api/Posts?pageIndex=${pageIndex}&pageSize=${pageSize}`)
       .then((response) => response.json())
       .then((data) => {
         setPosts(data.posts);

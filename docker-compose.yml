@@ -1,85 +1,82 @@
-version: '3'
+version: '3.8'
 
 services:
   mongo:
+    container_name: mongo_container
     image: mongo:latest
-    hostname: e549cf96644f
-    mac_address: 02:42:ac:11:00:03
-    environment:
-      - GOSU_VERSION=1.16
-      - JSYAML_VERSION=3.13.1
-      - MONGO_PACKAGE=mongodb-org
-      - MONGO_REPO=repo.mongodb.org
-      - MONGO_MAJOR=7.0
-      - MONGO_VERSION=7.0.2
-      - HOME=/data/db
     volumes:
-      - /data/configdb
-      - /data/db
+      - mongo-config:/data/configdb
+      - mongo-data:/data/db
     ports:
       - "27017:27017"
-    labels:
-      - org.opencontainers.image.ref.name=ubuntu
-      - org.opencontainers.image.version=22.04
 
   rabbitmq:
+    container_name: rabbitmq_container
     image: rabbitmq:management
-    hostname: 4e50bb65832b
-    mac_address: 02:42:ac:11:00:05
-    environment:
-      - PATH=/opt/rabbitmq/sbin:/opt/erlang/bin:/opt/openssl/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - ERLANG_INSTALL_PATH_PREFIX=/opt/erlang
-      - OPENSSL_INSTALL_PATH_PREFIX=/opt/openssl
-      - RABBITMQ_DATA_DIR=/var/lib/rabbitmq
-      - RABBITMQ_VERSION=3.12.6
-      - RABBITMQ_PGP_KEY_ID=0x0A9AF2115F4687BD29803A206B73A36E6026DFCA
-      - RABBITMQ_HOME=/opt/rabbitmq
-      - HOME=/var/lib/rabbitmq
-      - LANG=C.UTF-8
-      - LANGUAGE=C.UTF-8
-      - LC_ALL=C.UTF-8
     volumes:
-      - /var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
     ports:
       - "15672:15672"
       - "5672:5672"
-    labels:
-      - org.opencontainers.image.ref.name=ubuntu
-      - org.opencontainers.image.version=22.04
 
   mssql:
+    container_name: mssql_container
     image: mcr.microsoft.com/mssql/server:latest
-    hostname: 131ad9d80389
-    mac_address: 02:42:ac:11:00:02
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=YourStrongPassword1!
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - MSSQL_RPC_PORT=135
     ports:
       - "1433:1433"
-    labels:
-      - com.microsoft.product=Microsoft SQL Server
-      - com.microsoft.version=16.0.4075.1
-      - org.opencontainers.image.ref.name=ubuntu
-      - org.opencontainers.image.version=20.04
-      - vendor=Microsoft
 
   postgres:
+    container_name: postgres_container
     image: postgres:alpine3.18
-    hostname: cbdf3b205447
-    mac_address: 02:42:ac:11:00:04
     environment:
       - POSTGRES_PASSWORD=mysecretpassword
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - LANG=en_US.utf8
-      - PG_MAJOR=16
-      - PG_VERSION=16.0
-      - PG_SHA256=df9e823eb22330444e1d48e52cc65135a652a6fdb3ce325e3f08549339f51b99
-      - DOCKER_PG_LLVM_DEPS=llvm15-dev clang15
-      - PGDATA=/var/lib/postgresql/data
     volumes:
-      - C:\Users\morge\Desktop\asp.net-project\docker-postgres-userservice\host-path:/var/lib/postgresql/data
-      - /var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  frontend-react-app:
+    container_name: frontend_container
+    image: frontend-react-app
+    ports:
+      - "3000:80"
+    restart: no
+
+  userservice:
+    container_name: userservice_container
+    image: userservice:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5108:80"
+    working_dir: /app
+
+  blogservice:
+    container_name: blogservice_container
+    image: blogservice:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5097:80"
+    working_dir: /app
+    
+  notificationservice:
+    container_name: notificationservice_container
+    image: notificationservice:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5006:80"
+    working_dir: /app
+
+volumes:
+  mongo-config:
+  mongo-data:
+  rabbitmq-data:
+  postgres-data:

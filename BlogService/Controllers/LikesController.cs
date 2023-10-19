@@ -55,7 +55,7 @@ namespace BlogService.Controllers
                 await _context.SaveChangesAsync();
 
                 // Send a notification to RabbitMQ
-                var publisher = new RabbitMQPublisher("localhost");
+                var publisher = new RabbitMQPublisher("rabbitmq");
                 var notificationMessage = $"Post \"{likeDto.PostTitle}\" by {likeDto.PostAuthor} was liked by {likeDto.LoggedInUserName}! 👍";
                 publisher.PublishMessage("likeNotificationQueue", notificationMessage);
 

@@ -46,7 +46,6 @@ app.UseCors(builder =>
            .AllowAnyMethod()
            .AllowAnyHeader());
 
-app.UseHttpsRedirection();
 app.UseMiddleware<RateLimitingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();

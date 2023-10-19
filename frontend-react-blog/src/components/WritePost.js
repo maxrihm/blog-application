@@ -12,7 +12,7 @@ function WritePost() {
     const navigate = useNavigate();
 
     const handlePostSubmit = () => {
-        const apiUrl = "https://localhost:7046/api/Posts";
+        const apiUrl = "http://localhost:5097/api/Posts";
 
         const postData = {
             UserId: userId,

@@ -14,7 +14,7 @@ const RegisterPage = () => {
   };
 
   const handleRegister = () => {
-    const apiUrl = "https://localhost:7264/Auth/register";
+    const apiUrl = "http://localhost:5108/Auth/register";
   
     fetch(apiUrl, {
       method: "POST",

@@ -59,8 +59,6 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseHttpsRedirection();
-
     app.UseAuthorization();
 
     app.UseCors();

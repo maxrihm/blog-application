@@ -253,3 +253,4 @@ NotificationService/.vscode/
 NotificationService/.vs/
 NotificationService/bin/
 NotificationService/obj/
+postgres-data

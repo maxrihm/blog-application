@@ -12,7 +12,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    const apiUrl = "https://localhost:7264/Auth/login";
+    const apiUrl = "http://localhost:5108/Auth/login";
 
     fetch(apiUrl, {
       method: "GET",
