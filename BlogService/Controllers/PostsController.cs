@@ -94,8 +94,14 @@ namespace BlogService.Controllers
 
             InvalidateAllCaches();
 
+            // Publish a message to RabbitMQ
+            var publisher = new RabbitMQPublisher("localhost");
+            var notificationMessage = $"📝 User {post.UserName} wrote a post: \"{post.Title}\"!";
+            publisher.PublishMessage("likeNotificationQueue", notificationMessage);
+
             return new CreatedAtRouteResult(new { id = post.PostId }, post);
         }
+
 
         // DELETE: api/Posts/{id}
         [HttpDelete("{id}")]
