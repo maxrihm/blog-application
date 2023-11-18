@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // useNavigate is imported instead of useHistory
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './PostDetails.module.css';
 
 const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const loggedInUserId = useSelector(state => state.auth.userId); // get userId from auth state
-  const loggedInUserName = useSelector(state => state.auth.username); // Extracting username from the Redux store
-  const loggedInUserRole = useSelector(state => state.auth.role); // get user role from auth state
-  const [isLiked, setIsLiked] = useState(false);  // State to track if post is liked by user
-  const [comments, setComments] = useState([]);   // State to hold the list of comments
-  const [newComment, setNewComment] = useState(''); // State to hold the value of a new comment
-  const navigate = useNavigate();  // useNavigate is used instead of useHistory
+  const loggedInUserId = useSelector(state => state.auth.userId);
+  const loggedInUserName = useSelector(state => state.auth.username);
+  const loggedInUserRole = useSelector(state => state.auth.role);
+  const [isLiked, setIsLiked] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5097/api/Posts/${postId}?currentUserId=${loggedInUserId}`)
@@ -24,7 +24,6 @@ const PostDetails = () => {
   }, [postId, loggedInUserId]);
 
   useEffect(() => {
-    // Fetch comments when the component mounts
     fetch(`http://localhost:5097/api/Comments/${postId}`)
       .then(response => response.json())
       .then(data => setComments(data));
@@ -37,9 +36,9 @@ const PostDetails = () => {
       body: JSON.stringify({
         postId: post.postId,
         userId: loggedInUserId,
-        postTitle: post.title,            // Sending post title
-        postAuthor: post.userName,        // Sending post author
-        loggedInUserName: loggedInUserName // Using the extracted username
+        postTitle: post.title,
+        postAuthor: post.userName,
+        loggedInUserName: loggedInUserName
       })
     })
       .then(res => res.json())
@@ -72,7 +71,7 @@ const PostDetails = () => {
         .then(res => {
           if (res.ok) {
             alert("Post deleted successfully.");
-            navigate("/");  // navigate is used instead of history.push
+            navigate("/");
           } else {
             return res.json().then(err => {
               throw err;
@@ -90,7 +89,7 @@ const PostDetails = () => {
     const comment = {
       PostId: postId,
       UserId: loggedInUserId,
-      UserName: loggedInUserName,  // Send the username with the request
+      UserName: loggedInUserName,
       Content: newComment
     };
 
@@ -102,8 +101,13 @@ const PostDetails = () => {
       .then(response => response.json())
       .then(data => {
         setComments(prevComments => [...prevComments, data]);
-        setNewComment(''); // Clear the comment input
+        setNewComment('');
       });
+  };
+
+  // Add handleEditPost function
+  const handleEditPost = () => {
+    navigate(`/edit-post/${postId}`);
   };
 
   if (!post) return <p>Loading...</p>;
@@ -132,9 +136,14 @@ const PostDetails = () => {
         {isLiked ? "UnLike ❤️" : "Like 🤍"}
       </button>
       {(post.userName === loggedInUserName || loggedInUserRole === 'Admin') && (
-        <button onClick={handleDeletePost} className={styles.deleteButton}>
-          Delete Post
-        </button>
+        <>
+          <button onClick={handleEditPost} className={styles.editButton}>
+            Edit Post
+          </button>
+          <button onClick={handleDeletePost} className={styles.deleteButton}>
+            Delete Post
+          </button>
+        </>
       )}
 
       <div className={styles.commentsSection}>

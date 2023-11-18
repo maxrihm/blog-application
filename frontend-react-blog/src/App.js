@@ -8,6 +8,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import PostDetails from './components/PostDetails';
 import WritePost from './components/WritePost';
+import EditPost from './components/EditPost'; // added this line
 import NotificationManager from './components/NotificationManager';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -36,8 +37,9 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/write-post" element={<WritePost />} />
           <Route path="/post/:postId" element={<PostDetails />} />
+          <Route path="/edit-post/:postId" element={<EditPost />} />
         </Routes>
-        <ToastContainer 
+        <ToastContainer
           position="top-right"
           autoClose={5000}
           hideProgressBar

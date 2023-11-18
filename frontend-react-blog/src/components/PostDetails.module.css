@@ -93,3 +93,24 @@ button {
 .deleteButton:hover {
     background-color: #c82333;
 }
+
+.editButton {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .editButton:hover {
+    background-color: white;
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+  }

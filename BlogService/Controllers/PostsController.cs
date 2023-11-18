@@ -125,6 +125,25 @@ namespace BlogService.Controllers
             return NoContent();
         }
 
-        // ... other API endpoints ...
+        // PUT: api/Posts/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePost(int id, [FromBody] Post updateData)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            post.Title = updateData.Title;
+            post.Content = updateData.Content;
+
+            _context.Entry(post).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            InvalidateAllCaches();
+
+            return NoContent();
+        }
     }
 }
