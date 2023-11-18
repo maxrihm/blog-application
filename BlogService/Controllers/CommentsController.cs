@@ -42,5 +42,20 @@ namespace BlogService.Controllers
 
             return new CreatedAtRouteResult(new { id = comment.CommentId }, comment);
         }
+        // DELETE: api/Comments/{commentId}
+        [HttpDelete("{commentId}")]
+        public async Task<ActionResult> DeleteComment(int commentId)
+        {
+            var comment = await _context.Comments.FindAsync(commentId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

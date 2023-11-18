@@ -105,7 +105,22 @@ const PostDetails = () => {
       });
   };
 
-  // Add handleEditPost function
+  const handleDeleteComment = (commentId) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      fetch(`http://localhost:5097/api/Comments/${commentId}`, {
+        method: 'DELETE'
+      })
+      .then(res => {
+        if (res.ok) {
+          setComments(comments.filter(comment => comment.commentId !== commentId));
+        } else {
+          alert("Error deleting comment.");
+        }
+      })
+      .catch(error => console.error("Error:", error));
+    }
+  };
+
   const handleEditPost = () => {
     navigate(`/edit-post/${postId}`);
   };
@@ -152,6 +167,11 @@ const PostDetails = () => {
           <div key={comment.commentId} className={styles.comment}>
             <p><strong>{comment.userName}</strong>: {comment.content}</p>
             <small>{new Date(comment.dateCreated).toLocaleString()}</small>
+            {(comment.userName === loggedInUserName || loggedInUserRole === 'Admin') && (
+              <button onClick={() => handleDeleteComment(comment.commentId)} className={styles.deleteCommentButton}>
+                🗑️
+              </button>
+            )}
           </div>
         ))}
 
