@@ -1,5 +1,6 @@
 [![Static Badge](https://img.shields.io/badge/GitLab%20CI%2FCD-blue?logo=gitlab)](https://gitlab.com/maxrihm/blog-application)
 
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/f946M5q"  ><a href="//imgur.com/a/f946M5q">ASP.NET Project Showcase</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 # Project Checklist
 
